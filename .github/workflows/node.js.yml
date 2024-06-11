@@ -10,28 +10,27 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Set up environment variables
-      run: |
-        echo "MONGODB_URI=$MONGODB_URI" >> $GITHUB_ENV
-        echo "PORT=$PORT" >> $GITHUB_ENV
-      env:
-        MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        PORT: ${{ secrets.PORT }}
+      - name: Set up environment variables
+        run: |
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> $GITHUB_ENV
+          echo "PORT=${{ secrets.PORT }}" >> $GITHUB_ENV
 
-    - name: Run the application
-      run: npm start
+      - name: Run the application
+        run: npm start
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          PORT: ${{ secrets.PORT }}
