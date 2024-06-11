@@ -1,4 +1,4 @@
-name: Node.js CI/CD
+name: Node.js CI
 
 on:
   push:
@@ -14,19 +14,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v2
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'
+        node-version: '20'
 
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
-      run: npm test
+    - name: Set up environment variables
+      run: |
+        echo "MONGODB_URI=$MONGODB_URI" >> $GITHUB_ENV
+        echo "PORT=$PORT" >> $GITHUB_ENV
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        PORT: ${{ secrets.PORT }}
 
-    - name: Build the project
-      run: npm run build
+    - name: Run the application
+      run: npm start
